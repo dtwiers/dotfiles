@@ -1,0 +1,34 @@
+[core]
+    excludesfile = "$HOME/.gitignore_global"
+[user]
+    name = "Derek Wiers"
+    email = "dtwiers08@gmail.com"
+[alias]
+    # tig-like view
+    tree = log --all --graph --decorate --oneline --simplify-by-decoration
+    # reset all tracked & untracked files; not touching gitignored
+    cleaner = "!git clean -f; git add .; git reset --hard"
+    # git push
+    pu = "!git rev-parse --abbrev-ref HEAD | xargs git push -u origin"
+    # delete branches that have no unmerged changes related to $1 branch
+    trim = "!git checkout $1 && git pull && git remote prune origin && git branch --merged | grep -v '^\\*' | grep -v main | xargs git branch -d"
+    # list these config definitions
+    lla = "!git config -l | grep alias | cut -c 7-"
+    # list these config definitions, but only the names
+    la = !git config -l | grep alias | cut -c 7- | awk -F "=" '{print $1}'
+    # pull from upstream, push to origin
+    update-from = "!git pull upstream $1 && git pu"
+    # list local branches
+    lb = branch -l
+    # list all branches
+    lab = branch -al
+[init]
+    defaultBranch = main
+[diff]
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[merge]
+    tool = vscode
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
