@@ -35,6 +35,13 @@ vim.filetype.add({
     pattern = {},
 })
 
+-- set startup directory
+local args = vim.fn.argv()
+if #args > 0 and vim.fn.isdirectory(args[1]) >= 1 then
+    vim.cmd('cd ' .. vim.fn.fnameescape(args[1]))
+end
+
+
 -- Auto-save session when leaving Neovim
 -- vim.api.nvim_create_autocmd("VimLeave", {
 --     pattern = "*",
