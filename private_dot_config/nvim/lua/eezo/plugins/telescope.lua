@@ -30,14 +30,14 @@ return {
         vim.g.loaded_netrwPlugin = 1
 
         -- Check if Neovim is opened with a directory
-        vim.api.nvim_create_autocmd("VimEnter", {
-            pattern = "*",
-            callback = function()
-                if vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
-                    vim.cmd('bd1')
-                    vim.cmd('Telescope find_files')
-                end
-            end,
-        })
+    --     vim.api.nvim_create_autocmd("VimEnter", {
+    --         pattern = "*",
+    --         callback = function()
+    --             if vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+    --                 vim.cmd('bd1')
+    --                 vim.cmd('Telescope find_files')
+    --             end
+    --         end,
+    --     })
     end,
 }

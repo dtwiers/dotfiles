@@ -3,7 +3,7 @@ local normal_map = function(keymap, command)
     map('n', keymap, command, { noremap = true, silent = true })
 end
 vim.g.mapleader = " "
-normal_map('<Space>', '')
+-- normal_map('<Space>', '')
 normal_map('<leader>cf', '<cmd>lua vim.lsp.buf.format()<cr>')
 
 
@@ -25,6 +25,14 @@ vim.filetype.add({
     extension = {
         astro = "astro"
     }
+})
+
+vim.filetype.add({
+    extension = {
+        mdx = "markdown.mdx",
+    },
+    filename = {},
+    pattern = {},
 })
 
 -- Auto-save session when leaving Neovim
