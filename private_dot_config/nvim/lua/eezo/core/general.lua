@@ -3,14 +3,15 @@ local normal_map = function(keymap, command)
     map('n', keymap, command, { noremap = true, silent = true })
 end
 vim.g.mapleader = " "
--- normal_map('<Space>', '')
+map('', '<Space>', '<Nop>', { noremap = true, silent = true })
 normal_map('<leader>cf', '<cmd>lua vim.lsp.buf.format()<cr>')
 
 
 vim.o.number = true
 vim.o.expandtab = true
-vim.o.shiftwidth = 4
 vim.o.smarttab = true
+
+vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 
 normal_map('<leader>pl', ':vsplit<CR>')

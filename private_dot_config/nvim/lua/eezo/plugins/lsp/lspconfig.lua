@@ -138,6 +138,16 @@ return {
             end,
         })
 
+        lspconfig["gopls"].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+        lspconfig["rust_analyzer"].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
         -- configure prisma orm server
         lspconfig["prismals"].setup({
             capabilities = capabilities,
