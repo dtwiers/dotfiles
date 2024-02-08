@@ -1,3 +1,4 @@
+vim.filetype.add({ extension = { purs = 'purescript' }})
 local map = vim.keymap.set
 local normal_map = function(keymap, command)
     map('n', keymap, command, { noremap = true, silent = true })

@@ -23,6 +23,9 @@ return {
                 json = {
                     require("formatter.filetypes.json")
                 },
+                haskell = {
+                    require("formatter.filetypes.haskell")
+                },
                 html = {
                     require("formatter.filetypes.html")
                 },

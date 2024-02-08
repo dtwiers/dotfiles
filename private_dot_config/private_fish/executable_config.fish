@@ -3,5 +3,6 @@ if status is-interactive
     neofetch
     zoxide init fish | source
     source /home/derek/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+    source /opt/asdf-vm/asdf.fish
 end
 

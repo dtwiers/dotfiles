@@ -159,6 +159,17 @@ return {
             on_attach = on_attach,
         })
 
+        lspconfig["hls"].setup({
+            filetypes = { "haskell", "lhaskell", "cabal" },
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+        lspconfig["purescriptls"].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
         -- configure graphql language server
         lspconfig["graphql"].setup({
             capabilities = capabilities,
