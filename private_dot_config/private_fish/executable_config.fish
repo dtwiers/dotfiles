@@ -2,7 +2,8 @@ if status is-interactive
     starship init fish | source
     neofetch
     zoxide init fish | source
-    source /home/derek/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
-    source /opt/asdf-vm/asdf.fish
+    if test -z "$ASDF_HOME" -o ! -f "$ASDF_HOME"
+        echo "Error: \$ASDF_HOME is not set or does not point to a valid file."
+    end
 end
-
+source $ASDF_HOME
