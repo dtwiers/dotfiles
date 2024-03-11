@@ -26,9 +26,9 @@
     defaultBranch = main
 [diff]
     tool = vscode
-[difftool "vscode"]
-    cmd = code --wait --diff $LOCAL $REMOTE
+[difftool "nvimdiff"]
 [merge]
     tool = vscode
-[mergetool "vscode"]
-    cmd = code --wait $MERGED
+[mergetool "nvimdiff"]
+[includeIf "gitdir:~/proj/"]
+    path = ~/proj/.gitconfig

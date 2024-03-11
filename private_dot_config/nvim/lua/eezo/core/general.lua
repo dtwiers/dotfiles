@@ -43,28 +43,10 @@ if #args > 0 and vim.fn.isdirectory(args[1]) >= 1 then
     vim.cmd('cd ' .. vim.fn.fnameescape(args[1]))
 end
 
+normal_map('<leader>tn', ':tabnew<CR>')
+normal_map('<leader>tc', ':tabclose<CR>')
+normal_map('<leader>th', ':tabnext<CR>')
+normal_map('<leader>tl', ':tabprevious<CR>')
 
--- Auto-save session when leaving Neovim
--- vim.api.nvim_create_autocmd("VimLeave", {
---     pattern = "*",
---     callback = function()
---         local session_file = vim.fn.getcwd() .. '/Session.vim'
---         vim.cmd('mksession! ' .. vim.fn.fnameescape(session_file))
---     end
--- })
---
--- -- Function to load the session
--- local function load_session()
---     local session_file = vim.fn.getcwd() .. '/Session.vim'
---     if vim.fn.filereadable(session_file) == 1 then
---         vim.cmd('source ' .. vim.fn.fnameescape(session_file))
---     end
--- end
---
--- -- Auto-load session when entering Neovim
--- vim.api.nvim_create_autocmd("VimEnter", {
---     pattern = "*",
---     callback = function()
---         load_session()
---     end
--- })
+normal_map('<leader>/', ':noh<CR>')
+

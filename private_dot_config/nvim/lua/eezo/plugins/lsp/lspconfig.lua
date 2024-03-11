@@ -115,6 +115,12 @@ return {
             on_attach = on_attach,
         })
 
+        lspconfig["elixirls"].setup({
+            cmd = {"/Users/derekwiers/dev-tools/elixir-ls-release/language_server.sh"},
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
         lspconfig["astro"].setup({
             capabilities = capabilities,
             on_attach = on_attach,

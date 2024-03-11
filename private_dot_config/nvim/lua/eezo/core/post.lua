@@ -6,6 +6,7 @@ local function startTelescope(directory)
     vim.cmd("Telescope find_files cwd=" .. directory)
 end
 
+
 local args = vim.fn.argv()
 local arg_type = nil
 

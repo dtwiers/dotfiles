@@ -8,10 +8,10 @@ local leadermap = function(keymap, command)
 end
 
 
-normal_map('H', '<C-w>h')
-normal_map('J', '<C-w>j')
-normal_map('K', '<C-w>k')
-normal_map('L', '<C-w>l')
+normal_map('<leader>h', '<C-w>h')
+normal_map('<leader>j', '<C-w>j')
+normal_map('<leader>k', '<C-w>k')
+normal_map('<leader>l', '<C-w>l')
 
 
 local resize_split = function(direction)

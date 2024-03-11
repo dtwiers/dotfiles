@@ -20,6 +20,7 @@ return {
                     n = {
                         ["<leader>pl"] = actions.select_vertical,
                         ["<leader>pj"] = actions.select_horizontal,
+                        ["<leader>tn"] = actions.select_tab,
                     },
                 },
             },
