@@ -1,3 +1,4 @@
+vim.o.termguicolors = true
 vim.filetype.add({ extension = { purs = 'purescript' }})
 local map = vim.keymap.set
 local normal_map = function(keymap, command)
@@ -47,6 +48,7 @@ normal_map('<leader>tn', ':tabnew<CR>')
 normal_map('<leader>tc', ':tabclose<CR>')
 normal_map('<leader>th', ':tabnext<CR>')
 normal_map('<leader>tl', ':tabprevious<CR>')
+normal_map('<leader>to', ':tabonly<CR>')
 
 normal_map('<leader>/', ':noh<CR>')
 
