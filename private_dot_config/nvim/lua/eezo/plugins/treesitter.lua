@@ -4,6 +4,7 @@ return {
         require('nvim-treesitter.configs').setup({
             ensure_installed = {
                 "typescript",
+                "elixir",
                 "javascript",
                 "toml",
                 "go",

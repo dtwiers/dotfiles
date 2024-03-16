@@ -115,11 +115,26 @@ return {
             on_attach = on_attach,
         })
 
-        lspconfig["elixirls"].setup({
-            cmd = {"/Users/derekwiers/dev-tools/elixir-ls-release/language_server.sh"},
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        local elixir_ls_path = nil
+        local elixir_ls_paths = {
+            "/Users/derekwiers/dev-tools/elixir-ls-release/language_server.sh",
+            "/Users/derek/dev-tools/elixir-ls-release/language_server.sh",
+            "/opt/homebrew/bin/elixir-ls",
+        }
+        for _, path in ipairs(elixir_ls_paths) do
+            if vim.fn.filereadable(path) == 1 then
+                elixir_ls_path = path
+                break
+            end
+        end
+
+        if elixir_ls_path ~= nil then
+            lspconfig["elixirls"].setup({
+                cmd = { elixir_ls_path },
+                capabilities = capabilities,
+                on_attach = on_attach,
+            })
+        end
 
         lspconfig["astro"].setup({
             capabilities = capabilities,
