@@ -52,3 +52,17 @@ normal_map('<leader>to', ':tabonly<CR>')
 
 normal_map('<leader>/', ':noh<CR>')
 
+local listcharsOptions = {
+    tab = '▷ ',
+    trail = '~',
+    extends = '❯',
+    precedes = '❮',
+    lead = '·',
+    nbsp = '␣',
+}
+local listcharsArray = {}
+for key, value in pairs(listcharsOptions) do
+    table.insert(listcharsArray, key .. ':' .. value)
+end
+vim.o.listchars = table.concat(listcharsArray, ',')
+vim.o.list = true
