@@ -42,3 +42,5 @@ elseif arg_type == "directory" then
         end
     })
 end
+
+vim.cmd("set guicursor=n:blinkon250,i-ci-ve:ver25,r-cr-o:hor20")

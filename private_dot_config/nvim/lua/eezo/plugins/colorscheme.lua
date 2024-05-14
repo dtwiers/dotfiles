@@ -11,12 +11,25 @@
 -- 	end,
 -- }
 
-local flexoki = {
-    "kepano/flexoki-neovim",
+-- local flexoki = {
+--     "kepano/flexoki-neovim",
+--     config = function()
+--         require("flexoki").setup()
+--         vim.cmd([[colorscheme flexoki-dark]])
+--     end,
+-- }
+
+local onedark = {
+    "navarasu/onedark.nvim",
     config = function()
-        require("flexoki").setup()
-        vim.cmd([[colorscheme flexoki-dark]])
+        require("onedark").setup {
+            style = "darker",
+
+            colors = {
+                bg0 = "#0e1013"
+            },
+        }
+        vim.cmd([[colorscheme onedark]])
     end,
 }
-
-return flexoki
+return onedark
