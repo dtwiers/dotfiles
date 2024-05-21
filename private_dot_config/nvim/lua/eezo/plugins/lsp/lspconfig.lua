@@ -114,7 +114,7 @@ return {
             "astro",
             "rust_analyzer",
             "prismals",
-            "ocammllsp",
+            -- "ocammllsp",
             { "hls",      { filetypes = { "haskell", "lhaskell", "cabal" } } },
             "purescriptls",
             { "graphql",  { filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" } } },
