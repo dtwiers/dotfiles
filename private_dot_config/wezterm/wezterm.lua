@@ -40,8 +40,42 @@ end
 
 local scheme = wezterm.get_builtin_color_schemes()['One Dark (Gogh)']
 scheme.background = "#0e1013"
+scheme.foreground = "#acafb4"
+
+local leader = { key = "Enter", mods = "CTRL|SHIFT", timeout_milliseconds = 1000 }
+local keys = {
+    {
+        key = 'LeftArrow',
+        mods = 'LEADER',
+        action = wezterm.action.ActivateWindowRelative(-1),
+    },
+    {
+        key = 'RightArrow',
+        mods = 'LEADER',
+        action = wezterm.action.ActivateWindowRelative(1),
+    },
+    {
+        key = 'h',
+        mods = 'LEADER',
+        action = wezterm.action.ActivateWindowRelative(-1),
+    },
+    {
+        key = 'l',
+        mods = 'LEADER',
+        action = wezterm.action.ActivateWindowRelative(1),
+    },
+}
+-- for i in 1, 8 do
+--     table.insert(keys, {
+--         key = tostring(i),
+--         mods = 'LEADER',
+--         action = wezterm.action.ActivateWindow(i - 1),
+--     })
+-- end
 
 local config = wezterm.config_builder()
+config.leader = leader
+config.keys = keys
 
 config.window_background_opacity = 0.92
 config.macos_window_background_blur = 40
