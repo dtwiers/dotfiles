@@ -18,6 +18,7 @@ vim.o.tabstop = 4
 
 normal_map('<leader>pl', ':vsplit<CR>')
 normal_map('<leader>pj', ':split<CR>')
+normal_map('<leader>u', ":set @a = substitute(system(\"uuidgen | awk '{print tolower($0)}'\"), '\n', '', 'g')<CR>")
 vim.o.splitbelow = true
 vim.o.splitright = true
 
