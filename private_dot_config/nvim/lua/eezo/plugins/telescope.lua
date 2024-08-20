@@ -9,7 +9,8 @@ return {
         local map = vim.keymap.set
 
         map('n', '<leader>ff', builtin.find_files, {})
-        map('n', '<leader>fg', function() builtin.live_grep({debounce = 150}) end, {})
+        -- map('n', '<leader>fg', function() builtin.live_grep({debounce = 150}) end, {})
+        map('n', '<leader>fg', function() require("fzf-lua").live_grep() end, {})
         map('n', '<leader>fb', builtin.buffers, {})
         map('n', '<leader>fh', builtin.help_tags, {})
 
