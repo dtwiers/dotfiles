@@ -47,8 +47,8 @@ end
 
 normal_map('<leader>tn', ':tabnew<CR>')
 normal_map('<leader>tc', ':tabclose<CR>')
-normal_map('<leader>th', ':tabnext<CR>')
-normal_map('<leader>tl', ':tabprevious<CR>')
+normal_map('<leader>tl', ':tabnext<CR>')
+normal_map('<leader>th', ':tabprevious<CR>')
 normal_map('<leader>to', ':tabonly<CR>')
 
 normal_map('<leader>/', ':noh<CR>')
@@ -67,4 +67,4 @@ for key, value in pairs(listcharsOptions) do
 end
 vim.o.listchars = table.concat(listcharsArray, ',')
 vim.o.list = true
-vim.o.scrolloff = 10
+vim.o.scrolloff = 20

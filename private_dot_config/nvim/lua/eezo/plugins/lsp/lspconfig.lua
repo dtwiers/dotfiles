@@ -108,7 +108,7 @@ return {
 
         local servers = {
             "html",
-            "tsserver",
+            "ts_ls",
             "cssls",
             "tailwindcss",
             "astro",
