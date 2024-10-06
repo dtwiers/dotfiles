@@ -39,7 +39,8 @@ local getBackground = function ()
 end
 
 local scheme = wezterm.get_builtin_color_schemes()['One Dark (Gogh)']
-scheme.background = "#0e1013"
+-- scheme.background = "#0e1013"
+scheme.background = "#000000"
 scheme.foreground = "#acafb4"
 
 local leader = { key = "Enter", mods = "CTRL|SHIFT", timeout_milliseconds = 1000 }
@@ -92,10 +93,11 @@ config.cursor_blink_ease_out = "Linear"
 config.cursor_blink_rate = 500
 -- config.color_scheme = "Royal (Gogh)"
 -- config.color_scheme = "Fishbone (terminal.sexy)"
-config.color_schemes = {
-    ['One Darker'] = scheme,
-}
-config.color_scheme = "One Darker"
+config.color_scheme = 'Solarized Dark - Patched'
+-- config.color_schemes = {
+--     ['One Darker'] = scheme,
+-- }
+-- config.color_scheme = "One Darker"
 
 config.inactive_pane_hsb = {
     saturation = 0.7,

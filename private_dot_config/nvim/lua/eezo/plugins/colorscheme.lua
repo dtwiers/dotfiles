@@ -19,17 +19,30 @@
 --     end,
 -- }
 
-local onedark = {
-    "navarasu/onedark.nvim",
-    config = function()
-        require("onedark").setup {
-            style = "darker",
-
-            colors = {
-                bg0 = "#0e1013"
-            },
-        }
-        vim.cmd([[colorscheme onedark]])
-    end,
+-- local onedark = {
+--     "navarasu/onedark.nvim",
+--     config = function()
+--         require("onedark").setup {
+--             style = "darker",
+--
+--             colors = {
+--                 -- bg0 = "#0e1013"
+--                 bg0 = "#000000"
+--             },
+--         }
+--         vim.cmd([[colorscheme onedark]])
+--     end,
+-- }
+-- return onedark
+return {
+  "craftzdog/solarized-osaka.nvim",
+  lazy = false,
+  priority = 1000,
+  opts = {},
+  config = function()
+    require("solarized-osaka").setup({
+        transparent = false,
+    })
+    vim.cmd([[colorscheme solarized-osaka]])
+  end,
 }
-return onedark
