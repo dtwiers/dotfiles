@@ -78,6 +78,8 @@ return {
 
             opts.desc = "Restart LSP"
             keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+            vim.lsp.inlay_hint.enable(true)
         end
 
         -- used to enable autocompletion (assign to every lsp server config)

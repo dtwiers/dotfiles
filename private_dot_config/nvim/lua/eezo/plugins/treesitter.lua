@@ -5,6 +5,8 @@ return {
             ensure_installed = {
                 "typescript",
                 "elixir",
+                "eex",
+                "heex",
                 "javascript",
                 "toml",
                 "go",

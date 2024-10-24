@@ -44,3 +44,4 @@ elseif arg_type == "directory" then
 end
 
 vim.cmd("set guicursor=n:blinkon250,i-ci-ve:ver25,r-cr-o:hor20")
+vim.lsp.inlay_hint.enable(true)

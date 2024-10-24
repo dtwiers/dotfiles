@@ -33,4 +33,4 @@
 [includeIf "gitdir:~/proj/"]
     path = ~/proj/.gitconfig
 [push]
-	default = upstream
+	default = current
