@@ -81,7 +81,7 @@ config.keys = keys
 config.window_background_opacity = 0.92
 config.macos_window_background_blur = 40
 config.max_fps = 120
-config.font = wezterm.font('VictorMono Nerd Font', {weight = 'Light'})
+config.font = wezterm.font('VictorMono Nerd Font', {weight = 'Medium'})
 config.line_height = 0.92
 config.font_size = 18
 config.scrollback_lines = 20000
@@ -93,7 +93,9 @@ config.cursor_blink_ease_out = "Linear"
 config.cursor_blink_rate = 500
 -- config.color_scheme = "Royal (Gogh)"
 -- config.color_scheme = "Fishbone (terminal.sexy)"
-config.color_scheme = 'Solarized Dark - Patched'
+-- config.color_scheme = 'Solarized Dark - Patched'
+-- config.color_scheme = 'Orangeish (terminal.sexy)'
+config.color_scheme = 'Moonfly (Gogh)'
 -- config.color_schemes = {
 --     ['One Darker'] = scheme,
 -- }
