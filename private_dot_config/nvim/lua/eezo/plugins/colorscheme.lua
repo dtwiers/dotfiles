@@ -65,6 +65,8 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
+        vim.g.moonflyCursorColor = true
+        vim.g.moonflyWinSeparator = 2
         vim.cmd([[colorscheme moonfly]])
     end,
 }
