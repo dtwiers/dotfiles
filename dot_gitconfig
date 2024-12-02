@@ -25,11 +25,15 @@
 [init]
     defaultBranch = main
 [diff]
-    tool = vscode
-[difftool "nvimdiff"]
+    tool = nvim
+[difftool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE
+    prompt = false
 [merge]
-    tool = vscode
-[mergetool "nvimdiff"]
+    tool = nvim
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED
+    prompt = false
 [includeIf "gitdir:~/proj/"]
     path = ~/proj/.gitconfig
 [push]

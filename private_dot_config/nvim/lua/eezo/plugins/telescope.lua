@@ -11,6 +11,7 @@ return {
         map('n', '<leader>ff', builtin.find_files, {})
         -- map('n', '<leader>fg', function() builtin.live_grep({debounce = 150}) end, {})
         map('n', '<leader>fg', function() require("fzf-lua").live_grep() end, {})
+        map('n', '<leader>fG', function() require("fzf-lua").live_grep({ resume = true }) end, {})
         map('n', '<leader>fb', builtin.buffers, {})
         map('n', '<leader>fh', builtin.help_tags, {})
 

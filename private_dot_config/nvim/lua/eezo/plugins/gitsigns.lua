@@ -14,7 +14,12 @@ return {
             require("gitsigns").blame_line({full = true})
         end
 
+        local function preview_hunk()
+            require("gitsigns").preview_hunk()
+        end
+
         vim.keymap.set("n", "<leader>cs", blame_line, { desc = "Show blame line" })
+        vim.keymap.set("n", "<leader>cp", preview_hunk, { desc = "Preview hunk" })
 
     end,
 }

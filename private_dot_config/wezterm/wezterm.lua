@@ -81,7 +81,7 @@ config.keys = keys
 config.window_background_opacity = 0.92
 config.macos_window_background_blur = 40
 config.max_fps = 120
-config.font = wezterm.font('VictorMono Nerd Font', {weight = 'Medium'})
+config.font = wezterm.font('VictorMono Nerd Font', {weight = 'Medium', stretch = 'Normal', style = 'Normal'})
 config.line_height = 0.92
 config.font_size = 18
 config.scrollback_lines = 20000
@@ -102,8 +102,9 @@ config.color_scheme = 'Moonfly (Gogh)'
 -- config.color_scheme = "One Darker"
 
 config.inactive_pane_hsb = {
-    saturation = 0.7,
-    brightness = 0.4,
+    saturation = 0.6,
+    brightness = 0.6,
+
 }
 config.window_padding = {
 left = 0,
