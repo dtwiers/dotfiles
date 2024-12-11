@@ -112,7 +112,15 @@ return {
             "html",
             "ts_ls",
             "cssls",
-            "tailwindcss",
+            { "tailwindcss", {
+                init_options = {
+                    userLanguages = {
+                        elixir = "html-eex",
+                        eelixir = "html-eex",
+                        heex = "html-eex",
+                    },
+                },
+            }, },
             "astro",
             "rust_analyzer",
             "prismals",
@@ -179,6 +187,5 @@ return {
                 setup(server[1], server[2], server[3])
             end
         end
-
     end,
 }
