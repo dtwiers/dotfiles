@@ -163,22 +163,22 @@ return {
             } },
         }
 
-        local elixir_ls_path = nil
-        local elixir_ls_paths = {
-            "/Users/derekwiers/dev-tools/elixir-ls-release/language_server.sh",
-            "/Users/derek/dev-tools/elixir-ls-release/language_server.sh",
-            "/opt/homebrew/bin/elixir-ls",
-        }
-        for _, path in ipairs(elixir_ls_paths) do
-            if vim.fn.filereadable(path) == 1 then
-                elixir_ls_path = path
-                break
-            end
-        end
-
-        if elixir_ls_path ~= nil then
-            table.insert(servers, { "elixirls", { cmd = { elixir_ls_path } } })
-        end
+        -- local elixir_ls_path = nil
+        -- local elixir_ls_paths = {
+        --     "/Users/derekwiers/dev-tools/elixir-ls-release/language_server.sh",
+        --     "/Users/derek/dev-tools/elixir-ls-release/language_server.sh",
+        --     "/opt/homebrew/bin/elixir-ls",
+        -- }
+        -- for _, path in ipairs(elixir_ls_paths) do
+        --     if vim.fn.filereadable(path) == 1 then
+        --         elixir_ls_path = path
+        --         break
+        --     end
+        -- end
+        --
+        -- if elixir_ls_path ~= nil then
+        --     table.insert(servers, { "elixirls", { cmd = { elixir_ls_path } } })
+        -- end
 
         for _, server in ipairs(servers) do
             if type(server) == "string" then

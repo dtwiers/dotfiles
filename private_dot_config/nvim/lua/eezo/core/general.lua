@@ -8,7 +8,6 @@ vim.g.mapleader = " "
 map('', '<Space>', '<Nop>', { noremap = true, silent = true })
 normal_map('<leader>cf', '<cmd>lua vim.lsp.buf.format()<cr>')
 
-
 vim.o.number = true
 vim.o.expandtab = true
 vim.o.smarttab = true
@@ -68,3 +67,51 @@ end
 vim.o.listchars = table.concat(listcharsArray, ',')
 vim.o.list = true
 vim.o.scrolloff = 20
+
+local warning_msg_hl = vim.api.nvim_get_hl(0, { name = 'MoonflyYellowMode' })
+
+-- Define a custom highlight group based on 'WarningMsg'
+vim.api.nvim_set_hl(0, 'TrailingSpaces', {
+    fg = warning_msg_hl.fg or nil,
+    bg = warning_msg_hl.bg or nil,
+    underline = true, -- Optional: Add underline or other styling
+})
+
+-- Use the custom highlight group for trailing spaces
+vim.api.nvim_create_autocmd('BufWinEnter', {
+    pattern = '*',
+    callback = function()
+        vim.fn.matchadd('TrailingSpaces', '\\s\\+$') -- Highlight trailing spaces
+    end,
+})
+
+-- Highlight lines with only spaces using the custom group
+vim.api.nvim_create_autocmd('BufWinEnter', {
+    pattern = '*',
+    callback = function()
+        vim.fn.matchadd('TrailingSpaces', '^\\s\\+$') -- Highlight lines with only spaces
+    end,
+})
+
+-- Function to create a visual representation of highlight groups
+_G.visualize_highlight_groups = function()
+    local buf = vim.api.nvim_create_buf(false, true) -- Create a new scratch buffer
+    local hl_groups = vim.fn.getcompletion('', 'highlight') -- Get all highlight group names
+    for i, group in ipairs(hl_groups) do
+        local hl = vim.api.nvim_get_hl(0, { name = group })
+        vim.api.nvim_buf_set_lines(buf, i - 1, i, false, { group })
+        if hl.fg or hl.bg then
+            vim.api.nvim_buf_add_highlight(buf, -1, group, i - 1, 0, -1)
+        end
+    end
+    vim.api.nvim_open_win(buf, true, {
+        relative = 'editor',
+        width = 50,
+        height = #hl_groups,
+        row = 5,
+        col = 10,
+        border = 'rounded', -- Optional: Add a rounded border to the floating window
+    })
+end
+
+normal_map('<leader>hl', ':lua visualize_highlight_groups()<CR>')
