@@ -84,7 +84,7 @@ config.max_fps = 120
 config.font = wezterm.font('VictorMono Nerd Font', {weight = 'Medium', stretch = 'Normal', style = 'Normal'})
 config.line_height = 0.92
 config.font_size = 18
-config.scrollback_lines = 20000
+config.scrollback_lines = 80000
 config.native_macos_fullscreen_mode = true
 config.animation_fps = 60
 -- config.background = getBackground()
