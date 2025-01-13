@@ -114,4 +114,4 @@ _G.visualize_highlight_groups = function()
     })
 end
 
-normal_map('<leader>hl', ':lua visualize_highlight_groups()<CR>')
+-- normal_map('<leader>hl', ':lua visualize_highlight_groups()<CR>')
