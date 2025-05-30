@@ -1,28 +1,7 @@
 local wezterm = require 'wezterm'
 
 local dimmer = { brightness = 0.18 }
-local backgroundPhoenix = {
-    source = {
-        File = "/Users/derekwiers/Pictures/bg/Apo7X-Super-Phoenix-blur.png",
-    },
-    hsb = dimmer,
-    attachment = "Fixed",
-}
-local backgroundMars = {
-    source = {
-        File = "/Users/derekwiers/Pictures/bg/mars_blurred.png",
-    },
-    hsb = {brightness = 0.04},
-    attachment = "Fixed",
-}
-local backgroundSynthwave = {
-    source = {
-        File = "/Users/derekwiers/Pictures/bg/synthwave-blur.png",
-    },
-    hsb = {brightness = 0.030},
-    attachment = "Fixed",
-}
-local backgroundplain = {
+local backgroundPlain = {
     source = {
         Color = 'black',
     },
@@ -30,18 +9,14 @@ local backgroundplain = {
     width = "100%",
     hsb = dimmer,
     attachment = "Fixed",
+    opacity = 0.95,
 }
 
-local background = backgroundplain
+local background = backgroundPlain
 
-local getBackground = function ()
-    return {background}
+local getBackground = function()
+    return { background }
 end
-
-local scheme = wezterm.get_builtin_color_schemes()['One Dark (Gogh)']
--- scheme.background = "#0e1013"
-scheme.background = "#000000"
-scheme.foreground = "#acafb4"
 
 local leader = { key = "Enter", mods = "CTRL|SHIFT", timeout_milliseconds = 1000 }
 local keys = {
@@ -81,39 +56,64 @@ config.keys = keys
 config.window_background_opacity = 0.92
 config.macos_window_background_blur = 40
 config.max_fps = 120
-config.font = wezterm.font('VictorMono Nerd Font', {weight = 'Medium', stretch = 'Normal', style = 'Normal'})
+config.font = wezterm.font('VictorMono Nerd Font', { weight = 'Light', stretch = 'Normal', style = 'Normal' })
 config.line_height = 0.92
-config.font_size = 18
+config.font_size = 16
 config.scrollback_lines = 80000
 config.native_macos_fullscreen_mode = true
 config.animation_fps = 60
--- config.background = getBackground()
+config.background = getBackground()
 config.cursor_blink_ease_in = "Linear"
 config.cursor_blink_ease_out = "Linear"
 config.cursor_blink_rate = 500
--- config.color_scheme = "Royal (Gogh)"
--- config.color_scheme = "Fishbone (terminal.sexy)"
--- config.color_scheme = 'Solarized Dark - Patched'
--- config.color_scheme = 'Orangeish (terminal.sexy)'
-config.color_scheme = 'Moonfly (Gogh)'
--- config.color_schemes = {
---     ['One Darker'] = scheme,
--- }
--- config.color_scheme = "One Darker"
+config.color_scheme = 'Dissonance (Gogh)'
 
 config.inactive_pane_hsb = {
-    saturation = 0.6,
-    brightness = 0.6,
+    saturation = 0.8,
+    brightness = 0.5,
 
 }
 config.window_padding = {
-left = 0,
-right = 0,
-top = 0,
-bottom = 0
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0
 }
 config.tab_bar_at_bottom = true
-config.use_fancy_tab_bar = true
+config.use_fancy_tab_bar = false
 config.default_cursor_style = "BlinkingBlock"
+config.tab_max_width = 64
+
+config.colors = {
+    tab_bar = {
+        background = "#0e1013",
+        new_tab = {
+            bg_color = "#0e1013",
+            fg_color = "#039660",
+            intensity = "Bold",
+        },
+    },
+}
+
+wezterm.on(
+    'format-tab-title',
+    function(tab, tabs, panes, config, hover, max_width)
+        return require("tabs").format_tab(tab, tabs, panes, config, hover, max_width)
+    end
+)
+
+wezterm.on(
+    'update-status',
+    function(window, pane)
+        local text = " " .. wezterm.nerdfonts.md_calendar .. " " .. wezterm.strftime("%a %Y-%m-%d")
+        text = text .. " " .. wezterm.nerdfonts.md_clock .. " " .. wezterm.strftime("%H:%M:%S (%Z)")
+        window:set_right_status(wezterm.format({
+            { Background = { Color = "#0e1013" } },
+            { Foreground = { Color = "#B39DF3" } },
+            { Text = text },
+        }))
+    end
+)
+
 
 return config

@@ -1,3 +1,5 @@
+vim.cmd("filetype on")
+vim.cmd("filetype plugin on")
 vim.o.termguicolors = true
 vim.filetype.add({ extension = { purs = 'purescript' }})
 local map = vim.keymap.set
@@ -115,3 +117,11 @@ _G.visualize_highlight_groups = function()
 end
 
 -- normal_map('<leader>hl', ':lua visualize_highlight_groups()<CR>')
+
+_G.SetIndent = function(width)
+  -- Use vim.opt_local so that these settings are buffer-local
+  vim.opt_local.tabstop = width
+  vim.opt_local.shiftwidth = width
+  vim.opt_local.softtabstop = width
+  vim.opt_local.expandtab = true
+end
