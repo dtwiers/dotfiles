@@ -7,7 +7,6 @@ if status is-interactive
         mise activate fish | source
     end
 end
-source $ASDF_HOME
 
 abbr --add gils eza --long --git --header --git-ignore --git-repos
 abbr --add ll eza --long --git --header --almost-all --git-repos

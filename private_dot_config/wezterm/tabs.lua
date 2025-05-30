@@ -126,9 +126,9 @@ function result.format_tab(tab, tabs, panes, config, hover, max_width)
     local text = tab_title(tab)
     local pane_count = "" .. #panes
     local tab_index = "" .. tab.tab_index + 1
-    local max_width_less_meta = max_width - string.len(tab_index) - string.len(pane_count) - 4
+    local max_width_less_meta = max_width - string.len(tab_index) - string.len(pane_count) - 14
     local title = ellipsis(text, max_width_less_meta)
-    local result = {
+    local res = {
         format_left_border(hover, tab.is_active),
         format_index(tab_index, tab.is_active, hover),
         format_title(title, tab.is_active, hover),
@@ -136,7 +136,7 @@ function result.format_tab(tab, tabs, panes, config, hover, max_width)
         format_right_border(hover, tab.is_active),
     }
     local flattened_result = {}
-    for _, value in ipairs(result) do
+    for _, value in ipairs(res) do
         for _, item in ipairs(value) do
             table.insert(flattened_result, item)
         end
