@@ -16,5 +16,8 @@ return function(config)
     config.scrollback_lines = 80000
     config.native_macos_fullscreen_mode = true
 
+    config.initial_rows = 48
+    config.initial_cols = 160
+
     return config
 end
