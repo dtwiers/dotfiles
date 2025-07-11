@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 return function(config)
     config.tab_bar_at_bottom = true
     config.use_fancy_tab_bar = false
-    config.tab_max_width = 64
+    config.tab_max_width = 80
 
     wezterm.on(
         'format-tab-title',
