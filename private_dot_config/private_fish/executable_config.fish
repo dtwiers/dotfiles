@@ -22,3 +22,7 @@ if type -q 'opam'
     eval (opam env)
 end
 # END opam configuration
+
+if test -r "./private.fish"
+    source "./private.fish"
+end

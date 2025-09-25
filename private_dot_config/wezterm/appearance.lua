@@ -19,7 +19,17 @@ return function(config)
 
     -- Font
     if utils.os == 'macos' then
-        config.font = wezterm.font('VictorMono Nerd Font', { weight = 'Medium', stretch = 'Normal', style = 'Normal' })
+        -- config.font = wezterm.font('VictorMono Nerd Font', { weight = 'DemiBold', stretch = 'Normal', style = 'Normal' })
+        config.font = wezterm.font(
+            {
+                family = 'Monaspace Argon NF',
+                weight = 'Light',
+                stretch = 'Normal',
+                style = 'Normal',
+                harfbuzz_features={ 'calt', 'liga', 'dlig', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08' },
+            }
+        )
+
         config.font_size = 19.5
     else
         config.font = wezterm.font('VictorMono Nerd Font', { weight = 'Regular', stretch = 'Normal', style = 'Normal' })
