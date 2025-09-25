@@ -32,9 +32,12 @@ return function(config)
 
         config.font_size = 19.5
     else
-        config.font = wezterm.font('VictorMono Nerd Font', { weight = 'Regular', stretch = 'Normal', style = 'Normal' })
-        config.line_height = 0.94
-        config.font_size = 12
+        config.font = wezterm.font('VictorMono Nerd Font', {
+            weight = 'DemiBold',
+            stretch = 'Normal',
+            style = 'Normal',
+        })
+        config.font_size = 15
     end
 
     config.animation_fps = 60
