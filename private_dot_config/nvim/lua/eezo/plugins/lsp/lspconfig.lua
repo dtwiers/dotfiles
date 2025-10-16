@@ -6,187 +6,217 @@ return {
         { "antosha417/nvim-lsp-file-operations", config = true },
     },
     config = function()
-        -- import lspconfig plugin
-        local lspconfig = require("lspconfig")
-
-        -- local function attach_lsp_to_all_buffers()
-        --     for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-        --         if vim.api.nvim_buf_is_loaded(bufnr) then
-        --             local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-        --             local lsp = lspconfig[ft]
-        --             if lsp then
-        --                 -- Attempt to attach the LSP server to the buffer
-        --                 lsp.manager.try_add(bufnr)
-        --             end
-        --         end
-        --     end
-        -- end
-        --
-        -- -- Setup the auto-command to run the function after sessions are loaded
-        -- -- Replace 'SessionLoadPost' with the actual event you're using to finish loading a session
-        -- vim.api.nvim_create_autocmd('SessionLoadPost', {
-        --     group = vim.api.nvim_create_augroup('LspAttachOnSessionLoad', { clear = true }),
-        --     pattern = '*',
-        --     callback = attach_lsp_to_all_buffers,
-        -- })
-        --
-        -- import cmp-nvim-lsp plugin
+        -- cmp capabilities
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
-        local keymap = vim.keymap -- for conciseness
-
-        local opts = { noremap = true, silent = true }
-        local on_attach = function(client, bufnr)
-            opts.buffer = bufnr
-
-            -- set keybinds
-            opts.desc = "Show LSP references"
-            keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
-
-            opts.desc = "Go to declaration"
-            keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
-
-            opts.desc = "Show LSP definitions"
-            keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
-
-            opts.desc = "Show LSP implementations"
-            keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
-
-            opts.desc = "Show LSP type definitions"
-            keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
-
-            opts.desc = "See available code actions"
-            keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-
-            opts.desc = "Smart rename"
-            keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
-
-            opts.desc = "Show buffer diagnostics"
-            keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
-
-            opts.desc = "Show line diagnostics"
-            keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
-
-            opts.desc = "Go to previous diagnostic"
-            keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
-
-            opts.desc = "Go to next diagnostic"
-            keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
-
-            opts.desc = "Show documentation for what is under cursor"
-            keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-
-            opts.desc = "Restart LSP"
-            keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
-
-            vim.lsp.inlay_hint.enable(true)
-        end
-
-        -- used to enable autocompletion (assign to every lsp server config)
         local capabilities = cmp_nvim_lsp.default_capabilities()
 
-        -- Change the Diagnostic symbols in the sign column (gutter)
-        -- (not in youtube nvim video)
+        -- Signs (gutter)
         local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
         for type, icon in pairs(signs) do
             local hl = "DiagnosticSign" .. type
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-            -- vim.diagnostic.config({ signs = { active = icon } })
         end
 
-        local setup = function(name, extra_config, suppress_standard)
-            local config = {}
-            if not suppress_standard then
-                config.on_attach = on_attach
-                config.capabilities = capabilities
+        local function exepath(bin)
+            local p = vim.fn.exepath(bin)
+            return (p ~= "" and p) or nil
+        end
+
+        -- Build a cmd array if the binary exists; otherwise warn and return nil
+        local function cmd_if(bin, args)
+            local exe = exepath(bin)
+            if not exe then
+                vim.lsp.log.warn(("LSP skipped: %s not found in $PATH"):format(bin), vim.log.levels.WARN)
+                return nil
             end
-            if extra_config then
-                for k, v in pairs(extra_config) do
-                    config[k] = v
+            local cmd = { exe }
+            if args and #args > 0 then
+                vim.list_extend(cmd, args)
+            end
+            return cmd
+        end
+
+        ---------------------------------------------------------------------------
+        -- One place to set buffer-local keymaps & per-buffer toggles on attach
+        ---------------------------------------------------------------------------
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("UserLspKeymaps", { clear = true }),
+            callback = function(args)
+                local bufnr = args.buf
+                local opts = { noremap = true, silent = true, buffer = bufnr }
+
+                -- Telescope-powered jumpers
+                vim.keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>",
+                    vim.tbl_extend("force", opts, { desc = "LSP references" }))
+                vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>",
+                    vim.tbl_extend("force", opts, { desc = "LSP definitions" }))
+                vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>",
+                    vim.tbl_extend("force", opts, { desc = "LSP implementations" }))
+                vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>",
+                    vim.tbl_extend("force", opts, { desc = "LSP type definitions" }))
+
+                -- Native LSP actions
+                vim.keymap.set("n", "gD", vim.lsp.buf.declaration,
+                    vim.tbl_extend("force", opts, { desc = "Go to declaration" }))
+                vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,
+                    vim.tbl_extend("force", opts, { desc = "Code actions" }))
+                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,
+                    vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
+                vim.keymap.set("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover docs" }))
+
+                -- Diagnostics
+                vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>",
+                    vim.tbl_extend("force", opts, { desc = "Buffer diagnostics" }))
+                vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float,
+                    vim.tbl_extend("force", opts, { desc = "Line diagnostics" }))
+                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,
+                    vim.tbl_extend("force", opts, { desc = "Prev diagnostic" }))
+                vim.keymap.set("n", "]d", vim.diagnostic.goto_next,
+                    vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
+
+                -- LSP restart convenience
+                vim.keymap.set("n", "<leader>rs", "<cmd>LspRestart<CR>",
+                    vim.tbl_extend("force", opts, { desc = "Restart LSP" }))
+
+                -- Inlay hints on by default for this buffer
+                if vim.lsp.inlay_hint then
+                    pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
                 end
+            end,
+        })
+
+        ---------------------------------------------------------------------------
+        -- Helper to define per-server config via the new API
+        ---------------------------------------------------------------------------
+        local function define(server, extra, suppress_standard)
+            local cfg = extra and vim.deepcopy(extra) or {}
+            if not suppress_standard then
+                cfg.capabilities = vim.tbl_deep_extend("force", cfg.capabilities or {}, capabilities)
             end
-            lspconfig[name].setup(config)
+            -- New 0.11+ API: register/extend the config
+            vim.lsp.config(server, cfg)
+            return server
         end
 
+        ---------------------------------------------------------------------------
+        -- Server configurations (kept as close to your originals as possible)
+        ---------------------------------------------------------------------------
+        local enable_list = {}
 
-        local servers = {
-            "html",
-            "ts_ls",
-            "cssls",
-            { "tailwindcss", {
-                init_options = {
-                    userLanguages = {
-                        elixir = "html-eex",
-                        eelixir = "html-eex",
-                        heex = "html-eex",
+        local function add(name, extra, suppress_standard)
+            table.insert(enable_list, define(name, extra, suppress_standard))
+        end
+        -- astro
+        do
+            local cmd = cmd_if("astro-ls", { "--stdio" })
+            if cmd then add("astro", { cmd = cmd }) end
+        end
+
+        -- hls
+        do
+            -- HLS expects --lsp
+            local cmd = cmd_if("haskell-language-server-wrapper", { "--lsp" })
+            if cmd then add("hls", { cmd = cmd, filetypes = { "haskell", "lhaskell", "cabal" } }) end
+        end
+
+        -- rust_analyzer
+        do
+            local cmd = cmd_if("rust-analyzer")
+            if cmd then add("rust_analyzer", { cmd = cmd }) end
+        end
+
+        -- svelte
+        do
+            local cmd = cmd_if("svelteserver", { "--stdio" })
+            if cmd then
+                add("svelte", {
+                    cmd = cmd,
+                    on_attach = function(client, bufnr)
+                        vim.api.nvim_create_autocmd("BufWritePost", {
+                            buffer = bufnr,
+                            pattern = { "*.js", "*.ts" },
+                            callback = function(ctx)
+                                if client.name == "svelte" then
+                                    client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+                                end
+                            end,
+                        })
+                    end,
+                })
+            end
+        end
+
+        add("html")
+        add("ts_ls")
+        add("cssls")
+        add("tailwindcss", {
+            init_options = {
+                userLanguages = {
+                    elixir = "html-eex",
+                    eelixir = "html-eex",
+                    heex = "html-eex",
+                },
+            },
+        })
+        -- add("astro")
+        -- add("rust_analyzer")
+        add("prismals")
+        -- add("ocamllsp") -- if/when you want it
+        add("hls", { filetypes = { "haskell", "lhaskell", "cabal" } })
+        add("purescriptls")
+        add("graphql", { filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" } })
+        add("emmet_ls",
+            { filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" } })
+        add("pyright")
+
+        -- svelte: keep the TS/JS file-change notify hook
+        -- add("svelte", {
+        --   on_attach = function(client, bufnr)
+        --     vim.api.nvim_create_autocmd("BufWritePost", {
+        --       buffer = bufnr,
+        --       pattern = { "*.js", "*.ts" },
+        --       callback = function(ctx)
+        --         if client.name == "svelte" then
+        --           client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+        --         end
+        --       end,
+        --     })
+        --   end,
+        -- })
+
+        -- lua_ls settings
+        add("lua_ls", {
+            settings = {
+                Lua = {
+                    diagnostics = { globals = { "vim" } },
+                    workspace = {
+                        library = {
+                            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                            [vim.fn.stdpath("config") .. "/lua"] = true,
+                        },
                     },
                 },
-            }, },
-            "astro",
-            "rust_analyzer",
-            "prismals",
-            -- "ocammllsp",
-            { "hls",      { filetypes = { "haskell", "lhaskell", "cabal" } } },
-            "purescriptls",
-            { "graphql",  { filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" } } },
-            { "emmet_ls", { filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" } } },
-            "pyright",
-            { "svelte", {
-                on_attach = function(client, bufnr)
-                    on_attach(client, bufnr)
+            },
+        })
 
-                    vim.api.nvim_create_autocmd("BufWritePost", {
-                        pattern = { "*.js", "*.ts" },
-                        callback = function(ctx)
-                            if client.name == "svelte" then
-                                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-                            end
-                        end,
-                    })
-                end,
-            } },
-            { "lua_ls", {
-                settings = { -- custom settings for lua
-                    Lua = {
-                        -- make the language server recognize "vim" global
-                        diagnostics = {
-                            globals = { "vim" },
-                        },
-                        workspace = {
-                            -- make language server aware of runtime files
-                            library = {
-                                [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                                [vim.fn.stdpath("config") .. "/lua"] = true,
-                            },
-                        },
-                    },
-                },
-            } },
-        }
-
-        -- local elixir_ls_path = nil
-        -- local elixir_ls_paths = {
+        -- Example of optional elixirls detection (uncomment if you want it back)
+        -- do
+        --   local candidates = {
         --     "/Users/derekwiers/dev-tools/elixir-ls-release/language_server.sh",
         --     "/Users/derek/dev-tools/elixir-ls-release/language_server.sh",
         --     "/opt/homebrew/bin/elixir-ls",
-        -- }
-        -- for _, path in ipairs(elixir_ls_paths) do
+        --   }
+        --   for _, path in ipairs(candidates) do
         --     if vim.fn.filereadable(path) == 1 then
-        --         elixir_ls_path = path
-        --         break
+        --       add("elixirls", { cmd = { path } })
+        --       break
         --     end
-        -- end
-        --
-        -- if elixir_ls_path ~= nil then
-        --     table.insert(servers, { "elixirls", { cmd = { elixir_ls_path } } })
+        --   end
         -- end
 
-        for _, server in ipairs(servers) do
-            if type(server) == "string" then
-                setup(server)
-            else
-                setup(server[1], server[2], server[3])
-            end
-        end
+        ---------------------------------------------------------------------------
+        -- Enable all defined configs (activates for their declared filetypes)
+        ---------------------------------------------------------------------------
+        vim.lsp.enable(enable_list)
     end,
 }
