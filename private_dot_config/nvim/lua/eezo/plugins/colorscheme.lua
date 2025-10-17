@@ -59,14 +59,22 @@
 --     vim.cmd([[colorscheme solarized-osaka]])
 --   end,
 -- }
+-- return {
+--     "bluz71/vim-moonfly-colors",
+--     name = "moonfly",
+--     lazy = false,
+--     priority = 1000,
+--     config = function()
+--         vim.g.moonflyCursorColor = true
+--         vim.g.moonflyWinSeparator = 2
+--         vim.cmd([[colorscheme moonfly]])
+--     end,
+-- }
+
 return {
-    "bluz71/vim-moonfly-colors",
-    name = "moonfly",
-    lazy = false,
+    "miikanissi/modus-themes.nvim",
     priority = 1000,
     config = function()
-        vim.g.moonflyCursorColor = true
-        vim.g.moonflyWinSeparator = 2
-        vim.cmd([[colorscheme moonfly]])
+        vim.cmd([[colorscheme modus]])
     end,
 }

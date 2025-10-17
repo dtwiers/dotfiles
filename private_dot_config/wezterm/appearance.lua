@@ -40,7 +40,10 @@ return function(config)
     config.animation_fps = 60
     config.background = { background }
 
-    config.color_scheme = 'Dissonance (Gogh)'
+    -- config.color_scheme = 'Dissonance (Gogh)'
+    config.color_scheme = 'DotGov'
+    config.color_scheme = 'Dotshare (terminal.sexy)'
+    config.color_scheme = 'duckbones'
 
     -- Cursor
     config.default_cursor_style = "BlinkingBlock"

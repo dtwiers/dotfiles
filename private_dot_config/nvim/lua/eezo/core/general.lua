@@ -68,7 +68,7 @@ for key, value in pairs(listcharsOptions) do
 end
 vim.o.listchars = table.concat(listcharsArray, ',')
 vim.o.list = true
-vim.o.scrolloff = 20
+vim.o.scrolloff = 5
 
 local warning_msg_hl = vim.api.nvim_get_hl(0, { name = 'MoonflyYellowMode' })
 
