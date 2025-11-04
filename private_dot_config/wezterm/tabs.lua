@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local stdcolors = require 'std-colors'
 
 local result = {}
 
@@ -23,18 +24,18 @@ local RIGHT_BORDER = wezterm.nerdfonts.ple_pixelated_squares_big
 local INACTIVE_LEFT_BORDER = "   "
 local INACTIVE_RIGHT_BORDER = "   "
 
-local INACTIVE_INDEX_COLOR = "#039660"
-local BACKGROUND_COLOR = "#0e1013"
-local TEXT_COLOR = "#B39DF3"
-local ACTIVE_TEXT_COLOR = "#039660"
-local HOVER_TEXT_COLOR = "#F39660"
+local INACTIVE_INDEX_COLOR = stdcolors.highlight
+local BACKGROUND_COLOR = stdcolors.background
+local TEXT_COLOR = stdcolors.foreground
+local ACTIVE_TEXT_COLOR = stdcolors.highlight
+local HOVER_TEXT_COLOR = stdcolors.accent2
 
 local function format_left_border(hover, is_active)
     if is_active then
         return {
             { Background = { Color = BACKGROUND_COLOR } },
             { Foreground = { Color = ACTIVE_TEXT_COLOR } },
-            { Text = LEFT_BORDER .. " "},
+            { Text = LEFT_BORDER .. ""},
             { Background = { Color = ACTIVE_TEXT_COLOR } },
             { Foreground = { Color = BACKGROUND_COLOR } },
             { Text = " " },
