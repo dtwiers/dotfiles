@@ -1,6 +1,7 @@
 local keyset = vim.keymap.set
 
 -- Env toggles
+local usage = vim.env.USAGE
 local use_copilot = vim.env.USE_COPILOT ~= nil
 local use_ollama = vim.env.USE_OLLAMA ~= nil
 local disable_codeium = vim.env.DISABLE_CODEIUM ~= nil
@@ -54,89 +55,28 @@ local copilot = {
     end
 }
 
--- Optional Copilot Chat (no hard build step)
-local copilot_chat = {
-    "CopilotC-Nvim/CopilotChat.nvim",
+local codecompanion = {
+    "olimorris/codecompanion.nvim",
+    opts = {},
     dependencies = {
-        {"zbirenbaum/copilot.lua"},
-        {"nvim-lua/plenary.nvim"}
+        "nvim-lua/plenary.nvim",
+        "ravitemer/mcphub.nvim",
     },
-    -- build = "make tiktoken", -- optional; see docs for tiktoken_core install choices
-    opts = {}
-}
-
--- Codeium (vimscript plugin)
-local codeium = {
-    "Exafunction/codeium.vim",
-    event = "BufEnter",
     config = function()
-        -- Don’t let it bind default keys; we set our own
-        vim.g.codeium_disable_bindings = 1
+        require("codecompanion").setup({
+            extensions = {
+                mcphub = {
 
-        local opts = {expr = true, silent = true}
-        keyset(
-            "i",
-            "<S-Tab>",
-            function()
-                return vim.fn["codeium#Accept"]()
-            end,
-            opts
-        )
-        -- Be careful with Ctrl+Shift combos in terminals; they often don’t survive
-        keyset(
-            "i",
-            "<C-;>",
-            function()
-                return vim.fn
-            end,
-            opts
-        )
-        keyset(
-            "i",
-            "<M-;>",
-            function()
-                return vim.fn["codeium#CycleCompletions"](-1)
-            end,
-            opts
-        )
-        keyset(
-            "i",
-            "<C-e>",
-            function()
-                return vim.fn["codeium#Clear"]()
-            end,
-            opts
-        ) -- mirror Copilot dismiss
-        keyset(
-            "n",
-            "<leader>ac",
-            function()
-                return vim.fn["codeium#Complete"]()
-            end,
-            {silent = true}
-        )
-    end
-}
-
--- Parrot with built-in Ollama provider (correct endpoint; no custom glue needed)
-local parrot = {
-    "frankroeder/parrot.nvim",
-    dependencies = {"ibhagwan/fzf-lua", "nvim-lua/plenary.nvim"},
-    opts = {
-        providers = {
-            ollama = {
-                name = "ollama",
-                endpoint = "http://localhost:11434/api/chat", -- parrot’s expected Ollama endpoint
-                api_key = "", -- not required
-                params = {
-                    chat = {max_tokens = 2048, top_p = 0.9, min_p = 0.05, num_ctx = 163840, temperature = 0.5},
-                    command = {max_tokens = 1024, top_p = 0.8, min_p = 0.05, num_ctx = 163840, temperature = 0.35}
-                },
-                models = {"deepseek-coder-v2:16b"}
+                    callback = "mcphub.extensions.codecompanion",
+                    opts = {
+                        make_vars = true,
+                        make_slash_commands = true,
+                        show_result_in_chat = true
+                    }
+                }
             }
-        },
-        default_provider = "ollama"
-    }
+        })
+    end,
 }
 
 -- Assemble plugin list
@@ -144,11 +84,24 @@ local plugins = {}
 
 if use_copilot then
     table.insert(plugins, copilot)
--- table.insert(plugins, copilot_chat)
+    -- table.insert(plugins, copilot_chat)
 end
 
 if not disable_codeium then
-    table.insert(plugins, codeium)
+    table.insert(plugins, codecompanion)
+    return {
+        "olimorris/codecompanion.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        opts = {
+            -- NOTE: The log_level is in `opts.opts`
+            opts = {
+                log_level = "DEBUG", -- or "TRACE"
+            },
+        },
+    }
 end
 
 if use_ollama then

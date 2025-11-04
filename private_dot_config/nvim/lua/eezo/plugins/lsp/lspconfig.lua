@@ -10,6 +10,12 @@ return {
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
         local capabilities = cmp_nvim_lsp.default_capabilities()
 
+        -- Global LSP client flags (work around incremental sync nil crash)
+        local client_flags = {
+            allow_incremental_sync = false, -- <- avoids sync.lua prev_line nil
+            debounce_text_changes = 150,
+        }
+
         -- Signs (gutter)
         local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
         for type, icon in pairs(signs) do
@@ -17,22 +23,20 @@ return {
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
         end
 
+        -- helpers
         local function exepath(bin)
             local p = vim.fn.exepath(bin)
             return (p ~= "" and p) or nil
         end
 
-        -- Build a cmd array if the binary exists; otherwise warn and return nil
         local function cmd_if(bin, args)
             local exe = exepath(bin)
             if not exe then
-                vim.lsp.log.warn(("LSP skipped: %s not found in $PATH"):format(bin), vim.log.levels.WARN)
+                -- vim.notify(("LSP skipped: %s not found in $PATH"):format(bin), vim.log.levels.WARN)
                 return nil
             end
             local cmd = { exe }
-            if args and #args > 0 then
-                vim.list_extend(cmd, args)
-            end
+            if args and #args > 0 then vim.list_extend(cmd, args) end
             return cmd
         end
 
@@ -78,54 +82,48 @@ return {
                 vim.keymap.set("n", "<leader>rs", "<cmd>LspRestart<CR>",
                     vim.tbl_extend("force", opts, { desc = "Restart LSP" }))
 
-                -- Inlay hints on by default for this buffer
-                if vim.lsp.inlay_hint then
-                    pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
+                -- Inlay hints on by default (support 0.10/0.11 signatures)
+                if vim.lsp.inlay_hint and vim.lsp.inlay_hint.enable then
+                    local ok = pcall(vim.lsp.inlay_hint.enable, bufnr, true)           -- 0.10 style
+                    if not ok then pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr }) end -- 0.11 style
                 end
             end,
         })
 
         ---------------------------------------------------------------------------
-        -- Helper to define per-server config via the new API
+        -- define/add helpers with new 0.11 API
         ---------------------------------------------------------------------------
-        local function define(server, extra, suppress_standard)
+        local function define(server, extra)
             local cfg = extra and vim.deepcopy(extra) or {}
-            if not suppress_standard then
-                cfg.capabilities = vim.tbl_deep_extend("force", cfg.capabilities or {}, capabilities)
-            end
-            -- New 0.11+ API: register/extend the config
+            cfg.capabilities = vim.tbl_deep_extend("force", cfg.capabilities or {}, capabilities)
+            cfg.flags = vim.tbl_deep_extend("force", client_flags, cfg.flags or {})
             vim.lsp.config(server, cfg)
             return server
         end
 
-        ---------------------------------------------------------------------------
-        -- Server configurations (kept as close to your originals as possible)
-        ---------------------------------------------------------------------------
         local enable_list = {}
+        local function add(name, extra) table.insert(enable_list, define(name, extra)) end
 
-        local function add(name, extra, suppress_standard)
-            table.insert(enable_list, define(name, extra, suppress_standard))
-        end
-        -- astro
-        do
-            local cmd = cmd_if("astro-ls", { "--stdio" })
-            if cmd then add("astro", { cmd = cmd }) end
-        end
+        ---------------------------------------------------------------------------
+        -- Servers
+        ---------------------------------------------------------------------------
 
-        -- hls
-        do
-            -- HLS expects --lsp
-            local cmd = cmd_if("haskell-language-server-wrapper", { "--lsp" })
-            if cmd then add("hls", { cmd = cmd, filetypes = { "haskell", "lhaskell", "cabal" } }) end
-        end
-
-        -- rust_analyzer
-        do
-            local cmd = cmd_if("rust-analyzer")
-            if cmd then add("rust_analyzer", { cmd = cmd }) end
-        end
-
-        -- svelte
+        -- Web stack
+        add("html")
+        add("cssls")
+        add("ts_ls") -- typescript-language-server
+        add("tailwindcss", {
+            init_options = {
+                userLanguages = { elixir = "html-eex", eelixir = "html-eex", heex = "html-eex" },
+            },
+        })
+        add("emmet_ls", {
+            filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+        })
+        add("graphql", {
+            filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+        })
+        -- svelte (with TS/JS change notify)
         do
             local cmd = cmd_if("svelteserver", { "--stdio" })
             if cmd then
@@ -146,45 +144,7 @@ return {
             end
         end
 
-        add("html")
-        add("ts_ls")
-        add("cssls")
-        add("tailwindcss", {
-            init_options = {
-                userLanguages = {
-                    elixir = "html-eex",
-                    eelixir = "html-eex",
-                    heex = "html-eex",
-                },
-            },
-        })
-        -- add("astro")
-        -- add("rust_analyzer")
-        add("prismals")
-        -- add("ocamllsp") -- if/when you want it
-        add("hls", { filetypes = { "haskell", "lhaskell", "cabal" } })
-        add("purescriptls")
-        add("graphql", { filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" } })
-        add("emmet_ls",
-            { filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" } })
-        add("pyright")
-
-        -- svelte: keep the TS/JS file-change notify hook
-        -- add("svelte", {
-        --   on_attach = function(client, bufnr)
-        --     vim.api.nvim_create_autocmd("BufWritePost", {
-        --       buffer = bufnr,
-        --       pattern = { "*.js", "*.ts" },
-        --       callback = function(ctx)
-        --         if client.name == "svelte" then
-        --           client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-        --         end
-        --       end,
-        --     })
-        --   end,
-        -- })
-
-        -- lua_ls settings
+        -- Lua
         add("lua_ls", {
             settings = {
                 Lua = {
@@ -197,13 +157,43 @@ return {
                     },
                 },
             },
+            flags = {
+                allow_incremental_sync = false, -- <- important
+                debounce_text_changes = 150,
+            },
         })
 
-        -- Example of optional elixirls detection (uncomment if you want it back)
+        -- Rust
+        do
+            local cmd = cmd_if("rust-analyzer")
+            if cmd then add("rust_analyzer", { cmd = cmd }) end
+        end
+
+        -- Haskell
+        do
+            local cmd = cmd_if("haskell-language-server-wrapper", { "--lsp" })
+            if cmd then add("hls", { cmd = cmd, filetypes = { "haskell", "lhaskell", "cabal" } }) end
+        end
+
+        -- Astro (guard on binary name; the lsp name is “astro”)
+        do
+            local cmd = cmd_if("astro-ls", { "--stdio" })
+            if cmd then add("astro", { cmd = cmd }) end
+        end
+
+        -- Prisma
+        add("prismals")
+
+        -- Purescript
+        add("purescriptls")
+
+        -- Python
+        add("pyright")
+
+        -- (Optional) Elixir — uncomment when you want it:
         -- do
         --   local candidates = {
-        --     "/Users/derekwiers/dev-tools/elixir-ls-release/language_server.sh",
-        --     "/Users/derek/dev-tools/elixir-ls-release/language_server.sh",
+        --     "/Users/you/dev-tools/elixir-ls-release/language_server.sh",
         --     "/opt/homebrew/bin/elixir-ls",
         --   }
         --   for _, path in ipairs(candidates) do
@@ -215,7 +205,7 @@ return {
         -- end
 
         ---------------------------------------------------------------------------
-        -- Enable all defined configs (activates for their declared filetypes)
+        -- Enable
         ---------------------------------------------------------------------------
         vim.lsp.enable(enable_list)
     end,
