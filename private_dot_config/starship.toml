@@ -1,0 +1,24 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$time\
+$all\
+$shell$shlvl$character
+"""
+
+[shell]
+disabled = false
+fish_indicator = ''
+
+[shlvl]
+disabled = false
+symbol = "󰹺"
+threshold = 1
+format = '[$symbol$shlvl]($style)'
+repeat = false
+
+[time]
+disabled = false
+
+[status]
+disabled = false
