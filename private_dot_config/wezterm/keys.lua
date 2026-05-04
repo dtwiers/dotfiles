@@ -22,6 +22,11 @@ return function(config)
             mods = 'LEADER',
             action = wezterm.action.ActivateWindowRelative(1),
         },
+        {
+            key = 'w',
+            mods = 'SUPER|SHIFT',
+            action = wezterm.action.CloseCurrentPane { confirm = true },
+        },
     }
     return config
 end
