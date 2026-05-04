@@ -59,6 +59,9 @@ return function(config)
     config.color_scheme = 'Catppuccin Mocha'
     config.color_scheme = 'Ayu Mirage (Gogh)'
     config.color_scheme = 'ayu'
+    config.color_scheme = 'Liquid Carbon Transparent (Gogh)'
+    config.color_scheme = 'hund (terminal.sexy)'
+    config.color_scheme = 'Hardcore'
 
     -- Cursor
     config.default_cursor_style = "BlinkingBlock"

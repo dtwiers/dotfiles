@@ -6,6 +6,9 @@ if status is-interactive
     if type -q 'mise'
         mise activate fish | source
     end
+    if type -q 'direnv'
+        direnv hook fish | source
+    end
 end
 
 abbr --add gils eza --long --git --header --git-ignore --git-repos

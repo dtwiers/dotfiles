@@ -47,6 +47,12 @@ return {
             group = vim.api.nvim_create_augroup("UserLspKeymaps", { clear = true }),
             callback = function(args)
                 local bufnr = args.buf
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
+                if client and client.name == "denols" then
+                    for _, c in ipairs(vim.lsp.get_clients({ bufnr = bufnr, name = "ts_ls" })) do
+                        vim.lsp.stop_client(c.id)
+                    end
+                end
                 local opts = { noremap = true, silent = true, buffer = bufnr }
 
                 -- Telescope-powered jumpers
@@ -111,7 +117,18 @@ return {
         -- Web stack
         add("html")
         add("cssls")
-        add("ts_ls") -- typescript-language-server
+        add("ts_ls", {
+            root_dir = function(fname)
+                return vim.fs.root(fname, { "package.json", "tsconfig.json", "jsconfig.json" })
+            end,
+            single_file_support = false,
+        })
+        add("denols", {
+            root_dir = function(fname)
+                return vim.fs.root(fname, { "deno.json", "deno.jsonc" })
+            end,
+            single_file_support = true,
+        })
         add("tailwindcss", {
             init_options = {
                 userLanguages = { elixir = "html-eex", eelixir = "html-eex", heex = "html-eex" },
@@ -190,6 +207,8 @@ return {
         -- Python
         add("pyright")
 
+        add("expert")
+
         -- (Optional) Elixir — uncomment when you want it:
         -- do
         --   local candidates = {
@@ -203,6 +222,21 @@ return {
         --     end
         --   end
         -- end
+
+        ---------------------------------------------------------------------------
+        -- Deno shebang detection
+        ---------------------------------------------------------------------------
+        vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+            pattern = { "*.ts", "*.tsx" },
+            callback = function(args)
+                local first = vim.fn.getline(1)
+                if not first:find("deno") then return end
+                local clients = vim.lsp.get_clients({ bufnr = args.buf, name = "denols" })
+                if #clients == 0 then
+                    vim.lsp.start(vim.lsp.config("denols"), { bufnr = args.buf })
+                end
+            end,
+        })
 
         ---------------------------------------------------------------------------
         -- Enable
