@@ -126,8 +126,6 @@ _G.SetIndent = function(width)
   vim.opt_local.expandtab = true
 end
 
-vim.opt.rtp:prepend(vim.fn.expand("~/.config/tree-sitter-parsers"))
-
 vim.api.nvim_create_autocmd("FileType", {
     callback = function(args)
         pcall(vim.treesitter.start, args.buf)

@@ -14,5 +14,13 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     { import = "eezo.plugins" },
     { import = "eezo.plugins.lsp" },
+}, {
+    performance = {
+        rtp = {
+            paths = {
+                vim.fn.expand("~/.config/tree-sitter-parsers"),
+            },
+        },
+    },
 })
 
