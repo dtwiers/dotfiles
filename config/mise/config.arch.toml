@@ -1,0 +1,7 @@
+[tools]
+mpv = "0.41.0"
+
+[dotfiles]
+"~/.config/mpv" = "~/dotfiles/config/mpv"
+"~/.config/hypr" = "~/dotfiles/config/hypr"
+"~/.config/waybar" = "~/dotfiles/config/waybar"

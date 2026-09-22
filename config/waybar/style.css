@@ -1,0 +1,59 @@
+/* --- Ayu Dark palette (tweaked for bar legibility) --- */
+@define-color ayu-bg      #0A0E14;
+@define-color ayu-ui      #1F2430;
+@define-color ayu-surface #141821;
+@define-color ayu-fg      #B3B1AD;
+
+@define-color ayu-accent1 #E6B450; /* yellow */
+@define-color ayu-accent2 #39BAE6; /* blue  */
+@define-color ayu-accent3 #95E6CB; /* teal  */
+@define-color ayu-accent4 #F07178; /* red/pink */
+
+/* --- Base --- */
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
+  color: @ayu-fg;
+}
+
+window#waybar {
+  background: alpha(@ayu-bg, 0.92);
+  border-bottom: 1px solid alpha(@ayu-ui, 0.6);
+}
+
+/* --- Modules --- */
+#clock, #network, #pulseaudio, #battery, #cpu, #memory, #temperature, #tray, #window {
+  padding: 0 10px;
+}
+
+#clock { color: @ayu-accent1; }         /* date/time pop */
+#pulseaudio { color: @ayu-accent3; }
+#network { color: @ayu-accent2; }
+#cpu, #memory, #temperature { color: @ayu-fg; }
+#battery.charging, #battery.plugged { color: @ayu-accent3; }
+#battery.critical:not(.charging) { color: @ayu-accent4; }
+
+/* --- Workspaces --- */
+#workspaces button {
+  padding: 0 6px;
+  margin: 3px 3px;
+  color: alpha(@ayu-fg, 0.65);
+  background: transparent;
+  border-radius: 8px;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+#workspaces button:hover {
+  background: alpha(@ayu-surface, 0.8);
+  color: @ayu-fg;
+}
+
+#workspaces button.active {
+  background: alpha(@ayu-ui, 0.9);
+  color: @ayu-fg;
+  box-shadow: inset 0 -2px 0 0 @ayu-accent2; /* subtle indicator */
+}
+
+#tray > .passive { opacity: 0.6; }
+#tray > .needs-attention { color: @ayu-accent4; }
+

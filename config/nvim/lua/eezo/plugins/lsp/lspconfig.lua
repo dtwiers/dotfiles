@@ -233,7 +233,7 @@ return {
                 if not first:find("deno") then return end
                 local clients = vim.lsp.get_clients({ bufnr = args.buf, name = "denols" })
                 if #clients == 0 then
-                    vim.lsp.start(vim.lsp.config("denols"), { bufnr = args.buf })
+                    vim.lsp.start(vim.lsp.config["denols"], { bufnr = args.buf })
                 end
             end,
         })

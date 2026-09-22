@@ -1,0 +1,156 @@
+parser "bash" {
+    repo "https://github.com/tree-sitter/tree-sitter-bash"
+}
+
+parser "css" {
+    repo "https://github.com/tree-sitter/tree-sitter-css"
+}
+
+parser "csv" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-csv"
+    subdir "csv"
+}
+
+parser "diff" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-diff"
+}
+
+parser "dtd" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-xml"
+    subdir "dtd"
+}
+
+parser "elixir" {
+    repo "https://github.com/elixir-lang/tree-sitter-elixir"
+}
+
+parser "eex" {
+    repo "https://github.com/connorlay/tree-sitter-eex"
+}
+
+parser "fish" {
+    repo "https://github.com/ram02z/tree-sitter-fish"
+}
+
+parser "git_config" {
+    repo "https://github.com/the-mikedavis/tree-sitter-git-config"
+}
+
+parser "gitattributes" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-gitattributes"
+}
+
+parser "gitcommit" {
+    repo "https://github.com/gbprod/tree-sitter-gitcommit"
+}
+
+parser "gitignore" {
+    repo "https://github.com/shunsambongi/tree-sitter-gitignore"
+}
+
+parser "haskell" {
+    repo "https://github.com/tree-sitter/tree-sitter-haskell"
+}
+
+parser "heex" {
+    repo "https://github.com/phoenixframework/tree-sitter-heex"
+}
+
+parser "html" {
+    repo "https://github.com/tree-sitter/tree-sitter-html"
+}
+
+parser "hyprlang" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-hyprlang"
+}
+
+parser "javascript" {
+    repo "https://github.com/tree-sitter/tree-sitter-javascript"
+    rev "v0.25.0"
+}
+
+parser "jsdoc" {
+    repo "https://github.com/tree-sitter/tree-sitter-jsdoc"
+}
+
+parser "json" {
+    repo "https://github.com/tree-sitter/tree-sitter-json"
+}
+
+parser "kdl" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-kdl"
+}
+
+parser "markdown" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-markdown"
+    subdir "tree-sitter-markdown"
+}
+
+parser "nickel" {
+    repo "https://github.com/nickel-lang/tree-sitter-nickel"
+}
+
+parser "nu" {
+    repo "https://github.com/nushell/tree-sitter-nu"
+}
+
+parser "ocaml" {
+    repo "https://github.com/tree-sitter/tree-sitter-ocaml"
+    subdir "grammars/ocaml"
+}
+
+parser "ocaml_interface" {
+    repo "https://github.com/tree-sitter/tree-sitter-ocaml"
+    subdir "grammars/interface"
+}
+
+parser "psv" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-csv"
+    subdir "psv"
+}
+
+parser "python" {
+    repo "https://github.com/tree-sitter/tree-sitter-python"
+}
+
+parser "regex" {
+    repo "https://github.com/tree-sitter/tree-sitter-regex"
+}
+
+parser "rust" {
+    repo "https://github.com/tree-sitter/tree-sitter-rust"
+}
+
+parser "sql" {
+    repo "https://github.com/DerekStride/tree-sitter-sql"
+}
+
+parser "toml" {
+    repo "https://github.com/tree-sitter/tree-sitter-toml"
+}
+
+parser "tsv" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-csv"
+    subdir "tsv"
+}
+
+parser "tsx" {
+    repo "https://github.com/tree-sitter/tree-sitter-typescript"
+    subdir "tsx"
+    rev "v0.23.2"
+}
+
+parser "typescript" {
+    repo "https://github.com/tree-sitter/tree-sitter-typescript"
+    subdir "typescript"
+    rev "v0.23.2"
+}
+
+parser "xml" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-xml"
+    subdir "xml"
+}
+
+parser "yaml" {
+    repo "https://github.com/tree-sitter-grammars/tree-sitter-yaml"
+}

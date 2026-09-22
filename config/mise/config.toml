@@ -1,0 +1,22 @@
+[tools]
+bun = "1.3.3"
+deno = "2.7.14"
+node = "latest"
+opam = "latest"
+usage = "latest"
+opencode = "latest"
+
+[settings]
+dotfiles.root = "~/dotfiles"
+dotfiles.default_mode = "symlink"
+
+[dotfiles]
+"~/.config/nvim" = "~/dotfiles/config/nvim"
+"~/.config/starship.toml" = "~/dotfiles/config/starship.toml"
+"~/.gitconfig" = "~/dotfiles/home/gitconfig"
+"~/.gitignore_global" = "~/dotfiles/home/gitignore_global"
+"~/.config/fish" = { source = "~/dotfiles/config/fish", mode="symlink-each", exclude = ["fish_variables", "private.fish", "completions"] }
+"~/.config/obsidian/obsidian.json" = "~/dotfiles/config/obsidian/obsidian.json"
+"~/.config/wezterm" = "~/dotfiles/config/wezterm"
+"~/.config/mise" = { source = "~/dotfiles/config/mise", mode = "symlink-each", exclude = [".miserc.toml", "*.backup"] }
+

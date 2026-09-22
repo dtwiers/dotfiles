@@ -1,0 +1,23 @@
+[tools]
+elixir = "1.20.3-otp-29"
+erlang = "29.0.5"
+opam = "latest"
+postgres = "18.0"
+rust = "1.92.0"
+pipx = "latest"
+zig = "latest"
+"pipx:pipenv" = "latest"
+"aqua:koalaman/shellcheck" = "latest"
+"npm:marked" = "latest"
+nim = "2.2.6"
+oh-my-pi = { version = "latest", rename_exe = "omp" }
+herdr = "latest"
+"aqua:nushell" = "latest"
+
+[dotfiles]
+"~/.config/nushell/config.nu" = "~/dotfiles/config/nushell/config.nu"
+"~/.config/nushell/env.nu" = "~/dotfiles/config/nushell/env.nu"
+"~/.config/tree-sitter-parsers/setup.ts" = "~/dotfiles/config/tree-sitter-parsers/setup.ts"
+"~/.config/tree-sitter-parsers/languages.kdl" = "~/dotfiles/config/tree-sitter-parsers/languages.kdl"
+"~/.config/tree-sitter-parsers/.gitignore" = "~/dotfiles/config/tree-sitter-parsers/.gitignore"
+"~/.config/tree-sitter-parsers/AGENTS.md" = "~/dotfiles/config/tree-sitter-parsers/AGENTS.md"
