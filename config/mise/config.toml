@@ -5,6 +5,8 @@ node = "latest"
 opam = "latest"
 usage = "latest"
 opencode = "latest"
+herdr = "latest"
+oh-my-pi = { version = "latest", rename_exe = "omp" }
 
 [settings]
 dotfiles.root = "~/dotfiles"

@@ -39,6 +39,8 @@ return {
         "prismals",
         "pyright",
       },
+      -- StyLua is already configured as a CLI formatter, not a language server.
+      automatic_enable = { exclude = { "stylua" } },
       -- auto-install configured servers (with lspconfig)
       automatic_installation = true, -- not the same as ensure_installed
     })
